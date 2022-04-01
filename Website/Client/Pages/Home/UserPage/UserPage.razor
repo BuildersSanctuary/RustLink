@@ -1,0 +1,69 @@
+﻿@page "/users/{UserId}"
+@using System.Net
+@using Website.Components.Helpers
+@inject HttpClient HttpClient
+@inject ClientUserProvider ClientUserProvider
+@inject NavigationManager NavigationManager 
+
+<Meta property="og:image" content="@string.Concat("/api/users/", UserId, "/avatar")" />
+<Meta property="og:image:width" content="128" />
+<Meta property="og:image:height" content="128" />
+
+@if (User != null)
+{
+    <Title Value="@string.Join(" - ", User.Name, "Radium Mods")"></Title>
+
+    <Meta name="description" content="@User.Biography" />
+    <Meta property="og:title" content="@User.Name" />
+    <Meta property="og:description" content="@User.Biography" />
+
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/">Home</a></li>
+            <li class="breadcrumb-item">Users</li>
+            <li class="breadcrumb-item active">@User.Name</li>
+        </ol>
+    </nav>
+
+    <div class="row mt-5 mb-3">
+        <h2>
+            @User.Name
+        </h2>
+        
+        <p>
+            @User.Biography
+        </p>
+    </div>
+}
+else if (isLoaded)
+{
+    <h1>User Not Found</h1>
+}
+else
+{
+    <Progressbar />
+}
+
+@code {
+    [Parameter]
+    public int UserId { get; set; }
+    public RadiumUserDTO User { get; set; }
+    
+    private bool isLoaded;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        var response = await HttpClient.GetAsync($"api/users/{UserId}/profile");
+        isLoaded = true;
+        
+        if (response.StatusCode == HttpStatusCode.OK)
+        {
+            User = await response.Content.ReadFromJsonAsync<RadiumUserDTO>();
+            if (User is null)
+                return;
+            
+            User.Biography = MarkdownHelper.ParseToHtml(User.Biography);
+        }
+    }
+
+}

@@ -1,0 +1,55 @@
+﻿@using MudBlazor
+
+<MudDialog>
+    <DialogContent>
+        @foreach (var input in Entries?.Values?.SafeEnumerable())
+        { 
+            switch (input.Type)
+            {
+                case DialogInput.InputType.String:
+                    <MudTextField T="string" @bind-Text="@(input.CurrentValue)" Label="@input.Name" Variant="Variant.Filled"/>
+                    break;
+                    
+                case DialogInput.InputType.Boolean:
+                    <MudSwitch @bind-Checked="@input.CurrentValue" Label="@input.Name" Color="Color.Primary" />
+                    break;
+                    
+                case DialogInput.InputType.Enum:
+                    <MudSelect @bind-Value="@input.CurrentValue" Label="@input.Name" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter">
+                        @foreach (string enumValue in ((EnumDialogInput)input).EnumValues.SafeEnumerable())
+                        {
+                            <MudSelectItem Value="@enumValue" />
+                        }
+                    </MudSelect>
+                    break;
+                    
+                case DialogInput.InputType.Number:
+                    <MudNumericField @bind-Value="@input.CurrentValue" Label="@input.Name" Variant="Variant.Filled" />
+                    break;
+                    
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
+        }
+    </DialogContent>
+    <DialogActions>
+        <MudButton Color="Color.Error" OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Save</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter] 
+    MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] 
+    public Dictionary<string, DialogInput> Entries { get; set; } 
+    
+    void Submit()
+    { 
+        MudDialog.Close(DialogResult.Ok(Entries));
+    }
+
+    void Cancel() => MudDialog.Cancel();
+}
+

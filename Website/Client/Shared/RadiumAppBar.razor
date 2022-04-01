@@ -1,0 +1,58 @@
+﻿@inject ClientUserProvider UserProvider
+@inject NavigationManager navMan;
+
+<MudAppBar Elevation="1">
+    <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => MenuButtonCallback())" />
+
+    <a ID="HeaderLogoButton" href="/">
+        <img ID="HeaderLogo" src="./radiumlogosmall.png" style="height: 50px" />
+
+        <MudText Typo="Typo.h2" Class="ml-3">RADIUM</MudText>
+    </a>
+ 
+    <MudSpacer />
+        
+    <AuthorizeView>
+        <Authorized>
+            <MudMenu FullWidth="true" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Style="width: 200px;flex-direction: row-reverse">
+                <ActivatorContent>
+                    <MudIconButton Icon="@Icons.Material.Filled.MoreVert" Color="Color.Inherit" Edge="Edge.End" />
+                    <img ID="UserAvatar" src="@UserProvider.User.AvatarImageURL" style="height: 50px" />
+                </ActivatorContent>
+                <ChildContent>
+                    <MudMenuItem href="/profile">                        
+                        Profile
+                    </MudMenuItem>
+                    <MudMenuItem OnClick="SignOut">
+                        Sign Out
+                    </MudMenuItem>
+                </ChildContent>
+            </MudMenu>
+            
+        </Authorized>
+        <NotAuthorized>
+            <a href="/signin">
+                <img src="/img/steam/buttons/sits_small.png" />
+            </a>
+            
+            <a href="/signin-discord">
+                Discord
+            </a>
+            
+        </NotAuthorized>
+    </AuthorizeView>
+        
+    
+    
+</MudAppBar>
+
+@code
+{
+    [Parameter] public Action MenuButtonCallback { get; set; }
+
+    private void SignOut()
+    {
+        navMan.NavigateTo("signout", forceLoad: true);
+    }
+}
+

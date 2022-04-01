@@ -1,0 +1,81 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>10</LangVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazorise.Bootstrap" Version="1.0.1" />
+    <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.0.1" />
+    <PackageReference Include="Blazorise.Markdown" Version="1.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web.Extensions" Version="5.0.0-preview9.20513.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.0" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="MudBlazor" Version="6.0.7" />
+    <PackageReference Include="SharpZipLib" Version="1.3.1" />
+    <PackageReference Include="System.Net.Http.Json" Version="6.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Components\Website.Components.csproj" />
+    <ProjectReference Include="..\Shared\Website.Shared.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\favicon.ico">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <_ContentIncludedByDefault Remove="Shared\Components\Products\ProductCard.razor" />
+    <_ContentIncludedByDefault Remove="Shared\Components\Products\ProductItem.razor" />
+    <_ContentIncludedByDefault Remove="Shared\Components\Products\ProductPrice.razor" />
+    <_ContentIncludedByDefault Remove="Shared\Components\Products\ProductRating.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Home\CartPage\CartPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Home\CartPage\Components\SellerCart.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Home\CartPage\Components\TermsModal.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Home\ProductPage\Components\ProductReviewModal.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Home\ProductPage\Components\ReviewsTab.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Home\ProductPage\Components\VersionsPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Home\ProductPage\ProductPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Home\ProductsPage\ProductsPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Admin\ProductsPage\ProductsPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\CustomersPage\Components\AddCustomerModal.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\CustomersPage\CustomersPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductPage\Components\BasicInfoTab.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductPage\Components\BranchesTab.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductPage\Components\EditVersionModal.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductPage\Components\MediaTab.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductPage\Components\TabsTab.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductPage\Components\UploadVersion\Inputs\VersionZipFileInput.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductPage\Components\UploadVersion\Modals\PluginUploadModal.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductPage\Components\UploadVersion\UploadVersionTab.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductPage\ProductPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductsPage\Components\CreateProductModal.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\ProductsPage\ProductsPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Seller\StatisticsPage\StatisticsPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\CheckoutPage\CheckoutPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\CheckoutPage\Components\CheckoutItemBox.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\CheckoutPage\Components\SellerCard.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\CreateMessagePage\CreateMessagePage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\LicensesPage\LicensesPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\MessagePage\MessagePage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\MessagesPage\MessagesPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\OrdersPage\OrdersPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\SettingsPage\Components\NotificationsTab.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\SettingsPage\Components\ProfileTab.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\SettingsPage\Components\SellerTab.razor" />
+    <_ContentIncludedByDefault Remove="Pages\User\SettingsPage\SettingsPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Admin\UsersPage\Components\UserModal.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Admin\UsersPage\UsersPage.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Home\UserPage\Components\BiographyTab.razor" />
+    <_ContentIncludedByDefault Remove="Pages\Home\UserPage\Components\UserCard.razor" />
+    <_ContentIncludedByDefault Remove="Shared\Components\Badges\VerifiedSellerBadge.razor" />
+  </ItemGroup>
+
+</Project>

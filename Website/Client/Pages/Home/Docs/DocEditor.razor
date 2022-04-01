@@ -1,0 +1,160 @@
+﻿@page "/docs/{PageID}/edit"
+@using Blazorise
+@using Blazorise.Markdown
+@using Website.Server.Models
+@using System.Text.Json
+@inject HttpClient httpClient
+@inject NavigationManager navMan
+
+<AuthorizeView Roles="@Roles.Admin">
+    <Authorized>
+        <MudContainer MaxWidth="MaxWidth.Large">
+            <div class="d-flex">
+                @if (_items != null)
+                {
+                    <MudBreadcrumbs Items="_items"></MudBreadcrumbs>
+                } 
+                <div style="padding: 10px">
+                    <MudButton Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.Save"
+                               Color="MudBlazor.Color.Primary"
+                               OnClick="Save">
+                        Save
+                    </MudButton>
+                    <MudButton Variant="Variant.Filled"
+                               StartIcon="@Icons.Material.Filled.Cancel"
+                               Color="MudBlazor.Color.Secondary"
+                               OnClick="Cancel">
+                        Cancel
+                    </MudButton>
+                </div>
+            </div>
+            
+            @if (MarkdownValue != null)
+            {
+                <Markdown @bind-Value="@MarkdownValue"
+                          CustomButtonClicked="@OnCustomButtonClicked"
+                          ImageUploadChanged="@OnImageUploadChanged"
+                          ImageUploadStarted="@OnImageUploadStarted"
+                          ImageUploadProgressed="@OnImageUploadProgressed"
+                          ImageUploadEnded="@OnImageUploadEnded"/>
+            }
+
+        </MudContainer>
+    </Authorized>
+    
+    <NotAuthorized>
+        <p>You are not authorized to use this page.</p>
+    </NotAuthorized>
+</AuthorizeView>
+
+
+
+
+
+@code 
+{
+    [Parameter]
+    public string? PageID { get; set; }
+    
+    [Parameter]
+    public string MarkdownValue { get; set; }
+    
+    private List<MudBlazor.BreadcrumbItem>? _items;
+
+    
+    async Task Cancel()
+    {
+        navMan.NavigateTo("docs/" + PageID);
+    }
+    
+    async Task Save()
+    {
+        var doc = new DocDTO()
+        {
+            Markdown = MarkdownValue,
+            Name = PageID
+        };
+        
+        await httpClient.PutAsync("api/docs", JsonContent.Create(doc));
+        navMan.NavigateTo("docs/" + PageID);
+    }
+    
+    protected async override Task OnInitializedAsync()
+    {
+        _items = new List<MudBlazor.BreadcrumbItem>
+        {
+            new ("Home", href: "/", icon: Icons.Custom.Uncategorized.Radioactive),
+            new ("Docs", href: "/docs", icon: Icons.Material.Filled.TextSnippet),
+            new (FirstCharToUpper(PageID), href: "/docs/" + PageID, icon: Icons.Material.Filled.WrapText),
+            new ("Edit", href: "/docs/" + PageID + "/edit", icon: Icons.Material.Filled.Edit)
+        };
+
+        var Doc = await DocDTO.GetFromAPI(httpClient, PageID);
+        if (Doc == null)
+            return;
+
+        MarkdownValue = Doc.Markdown;
+        
+        StateHasChanged();
+    }
+    
+    
+    Task OnCustomButtonClicked( MarkdownButtonEventArgs eventArgs )
+    {
+        Console.WriteLine( $"Name: {eventArgs.Name} Value: {eventArgs.Value}" );
+
+        return Task.CompletedTask;
+    }
+    
+    async Task OnImageUploadChanged( FileChangedEventArgs e )
+    {
+        try
+        {
+            foreach ( var file in e.Files )
+            {
+                using ( var stream = new System.IO.MemoryStream() )
+                {
+                    await file.WriteToStreamAsync( stream );
+
+                    // do something with the stream
+                }
+            }
+        }
+        catch ( Exception exc )
+        {
+            Console.WriteLine( exc.Message );
+        }
+        finally
+        {
+            this.StateHasChanged();
+        }
+    }
+
+    Task OnImageUploadStarted( FileStartedEventArgs e )
+    {
+        Console.WriteLine( $"Started Image: {e.File.Name}" );
+
+        return Task.CompletedTask;
+    }
+
+    Task OnImageUploadProgressed( FileProgressedEventArgs e )
+    {
+        Console.WriteLine( $"Image: {e.File.Name} Progress: {(int)e.Percentage}" );
+
+        return Task.CompletedTask;
+    }
+
+    Task OnImageUploadEnded( FileEndedEventArgs e )
+    {
+        // We need to report back to Markdown that upload is done. We do this by setting the UploadUrl.
+        // NOTE: Since we're faking the upload in this demo we will just set some dummy UploadUrl.
+        e.File.UploadUrl = "https://images.pexels.com/photos/4966601/pexels-photo-4966601.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=200";
+
+        Console.WriteLine( $"Finished Image: {e.File.Name}, Success: {e.Success}" );
+
+        return Task.CompletedTask;
+    }
+    
+    public static string FirstCharToUpper(string input) => string.Concat(input[0].ToString().ToUpper(), input.AsSpan(1));
+}

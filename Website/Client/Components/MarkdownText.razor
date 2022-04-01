@@ -1,0 +1,122 @@
+﻿@using Markdig.Syntax.Inlines
+@inject NavigationManager NavigationManager;
+@inject IJSRuntime JsRuntime;
+
+<MudText Typo="Typo">
+    @foreach (var inline in Content)
+    {
+    	switch (inline)
+    	{
+    		case LiteralInline x:
+    			{
+    				@(x.Content)
+    				break;
+    			}
+    		case HtmlInline x:
+    			{
+				    @(x.Tag)
+    				break;
+    			}
+    		case LineBreakInline:
+    			{
+    				<br/>
+    				break;
+    			}
+    		case CodeInline x:
+    			{
+				    <code>
+					    @(x.Content)
+				    </code>
+    				break;
+    			}
+    		case EmphasisInline x:
+    			{
+    				if (!x.TryGetEmphasisElement(out var elementName))
+    					continue;
+    
+				    @if (elementName == "b")
+				    {
+					    <b> <MarkdownText Content="x" /> </b>
+				    }
+				    
+				    @if (elementName == "i")
+				    {
+					    <i> <MarkdownText Content="x" /> </i>
+				    } 
+    				break;
+    			}
+    		case LinkInline x:
+    			{
+    				var url = x.Url;
+    
+    				if (x.IsImage)
+    				{
+    					var alt = x
+    						.OfType<LiteralInline>()
+    						.Select(static x => x.Content);
+      
+					    <img src="@(url)" alt="@(alt)"/>
+    				}
+    				else// if (LinkCommand == null)
+    				{
+    				
+    					if (url.IsExternalUri(NavigationManager?.BaseUri))
+    					{
+						    <MudLink Href="@(url)" Target="_blank" rel="noopener noreferrer">
+							    <MarkdownText Content="@(x)" />
+						    </MudLink> 
+    					}
+    					// (prevent scrolling to the top of the page)
+    					// custom implementation only for links on the same page
+    					else if (url?.StartsWith('#') ?? false)
+    					{
+						    <MudLink Href="@(url)" Target="_blank" rel="noopener noreferrer" onclick=
+						             @EventCallback.Factory.Create(this, () =>
+                                    	{
+                                    	    if (NavigationManager == null)
+                                    		    return;
+                                    	
+                                    	    var uriBuilder = new UriBuilder(NavigationManager.Uri)
+                                    	    {
+                                    		    Fragment = url
+                                    	    };
+                                    	    var args = new LocationChangedEventArgs(uriBuilder.Uri.AbsoluteUri, true);
+                                    	    NavigationManagerOnLocationChanged(NavigationManager, args);
+                                    	})>
+							    <MarkdownText Content="@(x)" />
+						    </MudLink> 
+    					}
+    				}
+				    
+    				break;
+    			}
+    	}
+    }
+</MudText>
+
+
+@code {
+	
+    [Parameter]
+    public ContainerInline Content { get; set; }
+ 
+	
+    [Parameter]
+    public Typo Typo { get; set; } = Typo.body1;
+
+	
+	private async void NavigationManagerOnLocationChanged(object? sender, LocationChangedEventArgs e)
+	{
+		if (JsRuntime == null)
+			return;
+
+		var idFragment = new Uri(e.Location, UriKind.Absolute).Fragment;
+		if (!idFragment.StartsWith('#') || idFragment.Length < 2)
+			return;
+
+		idFragment = idFragment[1..];
+
+		await JsRuntime.InvokeVoidAsync("scrollToElementId", idFragment)
+			.ConfigureAwait(false);
+	}
+}

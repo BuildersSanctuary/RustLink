@@ -1,0 +1,110 @@
+﻿@page "/docs"
+@using Website.Client.Components.DialogBuilder
+@using Markdig.Extensions.TaskLists
+@inject HttpClient httpClient;
+@inject IDialogService DialogService
+
+<MudContainer MaxWidth="MaxWidth.Large">
+    <MudBreadcrumbs Items="_items"></MudBreadcrumbs>
+    
+    <MudText Typo="Typo.h2">Docs</MudText>
+    
+    <hr />
+    
+    <MudGrid>
+        @foreach (DocCategoryDTO category in DocCategories ?? Enumerable.Empty<DocCategoryDTO>())
+        {
+            <MudItem xs="4">
+                <MudPaper Elevation="10" Style="padding: 25px">
+                    <div class="d-flex justify-center align-center">
+                        <MudText Typo="Typo.h3">@category.Name.Humanize()</MudText>
+                        
+                        <AuthorizeView Roles="@Roles.Admin">
+                            <MudIconButton Style="margin-left: 15px;" Icon="@Icons.Filled.Add" @onclick="() => OpenNewItemDialog(category)" Variant="Variant.Filled" Color="Color.Primary"/>
+                        </AuthorizeView>
+                    </div>
+                    
+                    <hr/>
+
+                    @foreach (string link in category.Docs ?? Enumerable.Empty<string>())
+                    {
+                        <MudLink Href=@("/docs/permissions/ " + link)>
+                            @link.Humanize()
+                        </MudLink>
+                    }
+
+                </MudPaper>
+            </MudItem>
+        }
+    </MudGrid>
+    
+
+    <AuthorizeView Roles="@Roles.Admin">
+        <MudPaper Elevation="10" Style="margin-top: 50px;">
+            <MudButton @onclick="() => OpenNewCategoryDialog()" Variant="Variant.Filled" Color="Color.Primary">
+                New Category
+            </MudButton>
+        </MudPaper>
+        
+    </AuthorizeView>
+</MudContainer>
+
+
+@code {
+    
+    [Parameter]
+    public List<DocCategoryDTO>? DocCategories { get; set; }
+    
+    private List<BreadcrumbItem> _items = new ()
+    {
+        new BreadcrumbItem("Home", href: "/", icon: Icons.Custom.Uncategorized.Radioactive),
+        new BreadcrumbItem("Docs", href: "/docs", icon: Icons.Material.Filled.TextSnippet),
+    };
+    
+    protected async override Task OnInitializedAsync()
+    {
+        await RefreshCategories();
+    }
+
+    public async Task RefreshCategories()
+    {
+        DocCategories = await DocCategoryDTO.GetAllFromAPI(httpClient);
+    }
+    
+    
+    async Task OpenNewCategoryDialog(DocCategoryDTO existing = null)
+    {
+        var result = await DialogBuilder.New(DialogService, "New Category")
+            .WithString("Name")
+            .WithString("Description")
+            .Show();
+
+        string name = result.GetStringValue("Name");
+        string description = result.GetStringValue("Description");
+        
+        await httpClient.PutAsJsonAsync("api/doccategory", new DocCategoryDTO()
+        {
+            Name = name.Dehumanize().ToLower(),
+            Description = description,
+            Docs = new List<string>()
+        });
+        
+        await RefreshCategories();
+    }
+
+    async Task OpenNewItemDialog(DocCategoryDTO category)
+    {
+        string result = await DialogBuilder.GetString(DialogService, $"New Item in '{category.Name.Humanize()}'", "Page Name");
+        
+        if (result == null)
+            return;
+
+        category.Docs ??= new List<string>();
+        category.Docs.Add(result.Dehumanize().ToLower());
+        
+        await httpClient.PutAsJsonAsync("api/doccategory", category);
+        
+        await RefreshCategories();
+    }
+
+}

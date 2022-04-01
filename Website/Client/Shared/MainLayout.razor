@@ -1,0 +1,39 @@
+﻿@inherits LayoutComponentBase
+
+<MudDialogProvider />
+<MudSnackbarProvider />
+<MudThemeProvider Theme="Theme.RadiumTheme" />
+
+<MudLayout>
+    <RadiumAppBar MenuButtonCallback="DrawerToggle"/>
+
+    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+        <Sidebar />
+    </MudDrawer>
+    
+    <MudMainContent>
+        <div class="content-wrapper">
+            @Body
+        </div>
+    </MudMainContent>
+</MudLayout>
+
+
+@code
+{
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+        
+        StateHasChanged();
+    }
+    
+    protected override void OnInitialized()
+    {
+        StateHasChanged();
+    }
+}
+
+<Footer />

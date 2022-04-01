@@ -1,0 +1,107 @@
+﻿@page "/docs/{PageID}"
+@using Website.Server.Models
+@inject HttpClient httpClient
+@inject NavigationManager navMan
+
+
+<MudContainer MaxWidth="MaxWidth.Large">
+	<div class="d-flex">
+		@if (_items != null)
+		{
+			<MudBreadcrumbs Items="_items"></MudBreadcrumbs>
+		}
+		<AuthorizeView Roles="@Roles.Admin">
+			<Authorized>
+				<div style="padding: 10px">
+					<MudButton Variant="Variant.Filled"
+					           StartIcon="@Icons.Material.Filled.Edit"
+					           Color="MudBlazor.Color.Primary"
+					           OnClick="Edit">
+						Edit
+					</MudButton>
+				</div>
+			</Authorized>
+		</AuthorizeView>
+	</div>
+	
+	@for (var index = 0; index < Page?.Count; index++)
+	{
+		var block = Page[index];
+		switch (block)
+		{
+			case ParagraphBlock paragraph:
+			{
+				<MarkdownText Content="@(paragraph.Inline)" />
+				<br/>
+				break;
+			}
+			case HeadingBlock heading:
+			{
+				<br/>
+				<MarkdownText Content="@(heading.Inline)" Typo="@((Typo)heading.Level)" />
+				<br/>
+				break;
+			}
+			case QuoteBlock quote:
+			{
+				break;
+			}
+			case Table table:
+			{
+				break;
+			}
+			case ListBlock list:
+			{
+				break;
+			}
+			case ThematicBreakBlock:
+			{
+				break;
+			}
+			case FencedCodeBlock code:
+			{
+				<CodeSnippet>
+					@(code.CreateCodeBlockText())
+				</CodeSnippet>
+				break;
+			}
+		}
+	}
+	
+</MudContainer>
+
+@code {
+    
+    [Parameter]
+    public string? PageID { get; set; }
+	
+	[Parameter]
+	public MarkdownDocument? Page { get; set; }
+
+	public DocDTO Doc { get; set; }
+	private List<BreadcrumbItem>? _items;
+	
+	protected async override Task OnInitializedAsync()
+	{
+		_items = new List<BreadcrumbItem>
+		{
+			new ("Home", href: "/", icon: Icons.Custom.Uncategorized.Radioactive),
+			new ("Docs", href: "/docs", icon: Icons.Material.Filled.TextSnippet),
+			new (FirstCharToUpper(PageID), href: "/docs/" + PageID, icon: Icons.Material.Filled.WrapText)
+		};
+
+		Doc = await DocDTO.GetFromAPI(httpClient, PageID);
+		if (Doc == null)
+			return;
+
+		Page = Markdig.Markdown.Parse(Doc.Markdown);
+	}
+
+	async Task Edit()
+	{
+		navMan.NavigateTo("docs/" + PageID + "/edit");
+	}
+	
+	public static string FirstCharToUpper(string input) => string.Concat(input[0].ToString().ToUpper(), input.AsSpan(1));
+
+}

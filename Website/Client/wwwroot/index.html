@@ -1,0 +1,129 @@
+﻿<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Radium Mods</title>
+    <meta property="og:title" content="Radium Mods" />
+
+    <meta name="description" content="An extensible C# mod loader for Rust" />
+    <meta property="og:description" content="An extensible C# mod loader for Rust" />
+    
+    <meta name="keywords" content="C#,.NET,rust,oxide,rust plugins">
+    
+    <meta property="og:image" content="/radiumlogosmall.png" />
+    <meta property="og:image:width" content="128" />
+    <meta property="og:image:height" content="128" />
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#62f0af">
+    <meta name="msapplication-TileColor" content="#090d0b">
+    <meta name="theme-color" content="#090d0b">
+    
+    <base href="/" />
+    
+    <!-- GFONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+    <!-- BOOTSTRAP/FONTAWESOME -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css">
+
+    <!-- BLAZORIZE -->
+    <link href="https://unpkg.com/easymde/dist/easymde.min.css" rel="stylesheet" />
+    <link href="_content/Blazorise/blazorise.css" rel="stylesheet" />
+    <link href="_content/Blazorise.Bootstrap/blazorise.bootstrap.css" rel="stylesheet" />
+
+    <!-- MUD BLAZOR -->
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    
+    <!-- HIGHLIGHT.JS -->
+    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.4.0/styles/default.min.css">
+    
+    <!-- PERSONAL STYLES -->
+    <link href="css/app.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/ViceTheme.css">
+    <link href="css/site.css" rel="stylesheet"/>
+    <link href="Website.Client.styles.css" rel="stylesheet" />
+    <style>
+        body {
+            background: #151716;
+        }
+        .rotate {
+            animation: rotation 1.2s infinite cubic-bezier(0.5, 0, 0.5, 1);
+        }
+        .radiation {
+            filter: drop-shadow(0 0 1px rgb(98 240 175 / 60%)) drop-shadow(0 0 8px rgb(98 240 175 / 50%)) drop-shadow(0 0 0.7rem rgb(98 240 175 / 30%)) drop-shadow(0 0 2rem rgb(98 240 175 / 20%));
+            transition: 0.75s ease-in-out;
+        }
+        .radiation-light {
+            filter: drop-shadow(0 0 1px rgb(98 240 175 / 60%)) drop-shadow(0 0 2px rgb(98 240 175 / 50%)) drop-shadow(0 0 0.5rem rgb(98 240 175 / 30%)) drop-shadow(0 0 2rem rgb(98 240 175 / 20%));
+            transition: 0.75s ease-in-out;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div style="display: flex;
+                    flex-direction: column;
+                    align-content: center;
+                    justify-content: center;
+                    align-items: center;
+                    margin-top: 25vh">
+            <img class="rotate radiation" src="/radiumlogo.png" style="height: 350px;" />
+            <div style="margin-top: 25px;">
+                <h2 class="radiation-light" style="font-size: 2rem;
+                            color: white;
+                            font-family: anton,serif;
+                            text-transform: uppercase;">
+                    Loading...
+                </h2>
+            </div>            
+        </div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+
+    <script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+    <script src="_content/Blazorise.Markdown/markdown.js" type="module"></script>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+    
+    <script src="_framework/blazor.webassembly.js"></script>
+    
+    <script src="_content/Microsoft.AspNetCore.Components.Web.Extensions/headManager.js"></script>
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/highlight.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/languages/csharp.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.4.1/languages/css.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js" integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2" crossorigin="anonymous"></script>
+
+    <script>
+        window.highlightSnippet = function(){
+            document.querySelectorAll('pre code').forEach((el)=>{
+                hljs.highlightBlock(el);
+            });
+        }
+    </script>
+    
+    <script src="js/app.js"></script>
+
+
+</body>
+
+</html>

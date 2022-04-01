@@ -1,0 +1,49 @@
+﻿@page "/link"
+@inject ClientUserProvider UserProvider
+@inject NavigationManager navMan;
+
+<MudContainer Style="text-align: center; display: flex; justify-content: center; align-content: center; flex-direction: column">
+    @if (UserProvider == null || string.IsNullOrEmpty(UserProvider.DiscordName) || string.IsNullOrEmpty(UserProvider.SteamID)) 
+    {
+        <MudText Typo="Typo.h2" Style="margin-top: 100px">
+            Link Your Steam and Discord Accounts
+        </MudText>
+        
+        <hr/>
+        
+        <MudText Typo="Typo.body1">
+            Linking your Steam and Discord accounts allows us to verify your identity, which helps speed up VIP, support tickets, and much more.
+        </MudText>
+        <MudText Typo="Typo.body1">
+            This process is handled through Steam and Discord's OAuth system, and does not give us access to your account, only information
+            about who you are.
+        </MudText>
+        <hr/>
+        
+        <div>
+            <MudButton OnClick="LinkAccount" Color="Color.Primary" Variant="Variant.Filled" Style="padding: 25px">
+                Link Your Accounts
+            </MudButton>
+        </div>
+    }
+    else
+    { 
+        <div style="margin-top: 100px">
+            <img src="@UserProvider.User.AvatarImageURL"/>
+        </div>
+        
+        <MudText Typo="Typo.h2" Style="margin-top: 50px">
+          Your Discord Acccount @UserProvider.DiscordName is Linked to SteamID @UserProvider.SteamID
+        </MudText>
+    }
+</MudContainer>
+
+@code
+{
+    [Parameter] public Action MenuButtonCallback { get; set; }
+
+    private void LinkAccount()
+    {
+        navMan.NavigateTo("dolink", forceLoad: true);
+    }
+}

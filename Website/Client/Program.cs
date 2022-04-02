@@ -11,7 +11,6 @@ using Blazorise.Icons.FontAwesome;
 using MudBlazor.Services;
 using Website.Client.Providers;
 using Website.Client.Services;
-using Website.Components.Extensions;
 
 namespace Website.Client
 {
@@ -51,9 +50,8 @@ namespace Website.Client
             builder.Services.AddScoped<AuthenticationStateProvider, SteamAuthProvider>();
             builder.Services.AddTransient<StorageService>();
             builder.Services.AddTransient<ZIPService>();
-            builder.Services.AddScoped<ClientUserProvider>();
-            builder.Services.AddComponentsAndServices();
-
+            builder.Services.AddScoped<ClientUserProvider>(); 
+            
             WebAssemblyHost host = builder.Build();
             await host.RunAsync();
         }

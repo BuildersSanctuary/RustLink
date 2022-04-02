@@ -1,13 +1,12 @@
 .jumbotron {
     height: 450px;
-    background: #101110;
-    background-image: url('./radiumbanner.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
     align-items: flex-start;
     flex-direction: column;
     justify-content: center;
+    background: #0c0c0d;
 }
 
 .section-one {

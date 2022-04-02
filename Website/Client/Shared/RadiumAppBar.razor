@@ -5,9 +5,9 @@
     <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => MenuButtonCallback())" />
 
     <a ID="HeaderLogoButton" href="/">
-        <img ID="HeaderLogo" src="./radiumlogosmall.png" style="height: 50px" />
+        <img ID="HeaderLogo" src="./rustlinkerlogo.png" style="height: 50px" />
 
-        <MudText Typo="Typo.h2" Class="ml-3">RADIUM</MudText>
+        <MudText Typo="Typo.h2" Class="ml-3">RustLink</MudText>
     </a>
  
     <MudSpacer />
@@ -31,14 +31,9 @@
             
         </Authorized>
         <NotAuthorized>
-            <a href="/signin">
-                <img src="/img/steam/buttons/sits_small.png" />
-            </a>
-            
-            <a href="/signin-discord">
-                Discord
-            </a>
-            
+            <MudButton Color="Color.Primary" Variant="Variant.Filled">
+                LINK YOUR ACCOUNT
+            </MudButton>
         </NotAuthorized>
     </AuthorizeView>
         

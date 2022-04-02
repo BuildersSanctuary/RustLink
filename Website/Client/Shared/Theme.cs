@@ -24,26 +24,26 @@ public static class Theme
     {
         Palette = new Palette()
         {
-            Primary = "#62f0af",
-            PrimaryLighten = "#9ff3cc",
-            PrimaryDarken = "1f915d",
+            Primary = "#7289da",
+            PrimaryLighten = "#9fb2f5",
+            PrimaryDarken = "5365a3",
 
-            Black = "#232327",
-            Background = "#151716",
-            BackgroundGrey = "#27272f",
+            Black = "#242529",
+            Background = "#141517",
+            BackgroundGrey = "#313438",
 
-            Surface = "#101110",
-            DrawerBackground = "#101110",
+            Surface = "#0c0c0d",
+            DrawerBackground = "#0c0c0d",
             DrawerText = "rgba(255,255,255, 0.50)",
             DrawerIcon = "rgba(255,255,255, 0.50)",
 
-            AppbarBackground = "#090d0b",
+            AppbarBackground = "#141517",
             AppbarText = Colors.Shades.Black,
 
             TextPrimary = "rgba(255,255,255, 1)",
             TextSecondary = "rgba(255,255,255, 0.60)",
 
-            ActionDefault = "#61e6ad",
+            ActionDefault = "#7289da",
             ActionDisabled = "rgba(255,255,255, 0.26)",
             ActionDisabledBackground = "rgba(255,255,255, 0.12)",
             Divider = "rgba(255,255,255, 0.12)",

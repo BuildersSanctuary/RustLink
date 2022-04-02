@@ -4,18 +4,23 @@
 
 <div>
     <div class="jumbotron">
-        
         <div class="header-text">
-            <MudText Typo="Typo.h1" Class="ml-3">AN EXTENSIBLE MODLOADER FOR THE RUST COMMUNITY</MudText>
+            <MudText Typo="Typo.h1" Class="ml-3">LINK YOUR STEAM AND DISCORD ACCOUNTS</MudText>
             <MudText Typo="Typo.h4" Class="ml-3" Style="margin-top: 25px;">
-                Radium is a reliable and performant plugin loader for Rust game servers, supporting runtime hook injection,<br/>
-                hotloading of DLL mods and .cs plugins, and a suite of libraries designed by professional modders.
+                RustLink is a free and open source Steam-Discord linker, designed for the Rust community.<br/>
+                It's easy to set up, speeds up VIP and ticket processing with linked accounts, and can enable perks on your server.
             </MudText>
-            
-            <MudButton Variant="Variant.Filled" Style="background-color: #7289da; margin-left: 50px; margin-top: 25px;">
-                <img src="discord.png" style="height: 50px;" />
-            </MudButton>
 
+            <div class="jumbo-button-container">
+                 <MudButton Color="Color.Primary" Variant="Variant.Filled" Style="padding: 15px 25px;">
+                                Set Up Your Server
+                            </MudButton>
+                            
+                <MudButton Color="Color.Dark" Variant="Variant.Filled" Style="padding: 15px 25px;">
+                    Get Help On Discord
+                </MudButton>
+            </div>
+            
         </div>
     </div>
     
@@ -24,14 +29,35 @@
             
             <FeatureCard>
                 <MudText Typo="Typo.h2" Class="ml-3">
-                    Reliable Hook Injection
+                    100% Free and Open Source
                 </MudText>
-                
+                <hr/>
                 <MudText Typo="Typo.body2" Class="ml-3">
-                    Radium uses Harmony
+                    This site is provided as free software in an effort to improve the community tools available to admins. 
+                    RustLinker is open-source software though, so you can run it on your own infrastructure with your own database if you'd like.
+                    <br/><br/>
+                    It's built for MongoDB and Blazor, a stable browser framework based on C# and ASP.NET Core that will be familiar to Rust plugin devs.
+                    <br/><br/>
+                    If you don't want to host it yourself, you can still customize the branding on your endpoint, i.e. <code>sanctuary.rustlink.com</code>.
                 </MudText>
             </FeatureCard>
             
+            <FeatureCard>
+                <MudText Typo="Typo.h2" Class="ml-3">
+                    Easy API Access
+                </MudText>
+                <hr/>
+                <MudText Typo="Typo.body2" Class="ml-3">
+                    RustLink provides an API open to server owners to get linked Discord IDs for Steam IDs, and vice versa. 
+                    You can integrate this with your own code, or use our services to access it.
+                    <br/><br/>
+                    Also, if you'd like to give perks to linked accounts, we provide an Oxide plugin that will automatically
+                    give linked players a "Linked" permission group.
+                    <br/><br/>
+                    Disclaimer: Once a player links with RustLink.com, they'll be linked on any server using RustLink.com. If you don't want to share data,
+                    RustLink is open source, so you can run it yourself with your own database.
+                </MudText>
+            </FeatureCard>
 
         </MudGrid>
     </div>
